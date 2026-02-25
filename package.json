@@ -1,11 +1,11 @@
 {
   "name": "launchreel",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Turn any website into launch videos and screenshots",
   "type": "module",
   "bin": {
-    "launchreel": "./dist/index.js",
-    "lr": "./dist/index.js"
+    "launchreel": "dist/index.js",
+    "lr": "dist/index.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -28,6 +28,15 @@
     "recording"
   ],
   "license": "MIT",
+  "author": "Tim  Chosen",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gudlab/launchreel.git"
+  },
+  "homepage": "https://github.com/gudlab/launchreel#readme",
+  "bugs": {
+    "url": "https://github.com/gudlab/launchreel/issues"
+  },
   "engines": {
     "node": ">=18"
   },
