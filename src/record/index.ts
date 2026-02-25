@@ -1,0 +1,11 @@
+export { launchBrowser, createPage, DEFAULT_VIEWPORT } from "./browser.js";
+export type { ViewportConfig, BrowserOptions } from "./browser.js";
+export { startRecording, collectEvents, isRecording } from "./rrweb-injector.js";
+export { dismissCookies, setupCookieDismissal } from "./cookie-dismisser.js";
+export { switchToTheme, forceLightTheme, forceDarkTheme } from "./theme-handler.js";
+export { captureScreenshot } from "./screenshot-capture.js";
+export { authenticate } from "./auth-handler.js";
+export { executeActions, executeAction, parseAction } from "./action-executor.js";
+export type { Action, ActionContext } from "./action-executor.js";
+export { recordAll } from "./record-runner.js";
+export type { RecordingResult } from "./record-runner.js";

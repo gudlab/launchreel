@@ -1,0 +1,19 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Output artifacts
+launchreel-output/
+recordings/
+frames/
+screenshots/
+videos/
+
+# Environment
+.env
+.env.local
+cookies.json
+
+# OS
+.DS_Store
+Thumbs.db

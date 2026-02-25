@@ -1,0 +1,122 @@
+project:
+  name: GudForm
+  url: https://gudform.com
+  viewport:
+    width: 1440
+    height: 900
+    deviceScaleFactor: 2
+  theme: light
+scenarios:
+  - id: homepage
+    name: GudForm – Forms for humans and AI agents
+    type: screenshot+video
+    page: /
+    actions:
+      - dismiss_cookies: true
+      - wait: 2000
+      - screenshot:
+          name: 01-homepage
+      - scroll:
+          to: 8034
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 16069
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 24103
+          duration: 1500
+      - wait: 1000
+  - id: pricing
+    name: Pricing – GudForm
+    type: screenshot+video
+    page: /pricing
+    actions:
+      - dismiss_cookies: true
+      - wait: 2000
+      - screenshot:
+          name: 02-pricing
+      - scroll:
+          to: 6614
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 13228
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 19841
+          duration: 1500
+      - wait: 1000
+  - id: templates
+    name: Templates - GudForm
+    type: screenshot+video
+    page: /templates
+    actions:
+      - dismiss_cookies: true
+      - wait: 2000
+      - screenshot:
+          name: 03-templates
+      - scroll:
+          to: 6637
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 13273
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 19910
+          duration: 1500
+      - wait: 1000
+  - id: integrations
+    name: Integrations - GudForm
+    type: screenshot+video
+    page: /integrations
+    actions:
+      - dismiss_cookies: true
+      - wait: 2000
+      - screenshot:
+          name: 04-integrations
+      - scroll:
+          to: 3872
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 7743
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 11615
+          duration: 1500
+      - wait: 1000
+  - id: docs
+    name: Developer Documentation - GudForm
+    type: screenshot+video
+    page: /docs
+    actions:
+      - dismiss_cookies: true
+      - wait: 2000
+      - screenshot:
+          name: 05-docs
+      - scroll:
+          to: 4367
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 8733
+          duration: 1500
+      - wait: 1000
+      - scroll:
+          to: 13100
+          duration: 1500
+      - wait: 1000
+export:
+  videos:
+    format: mp4
+    fps: 24
+    crf: 18
+  combined_video:
+    enabled: true
+    name: launch-reel.mp4

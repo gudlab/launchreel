@@ -1,0 +1,39 @@
+project:
+  name: "GudForm"
+  url: "https://gudform.com"
+  viewport: { width: 1440, height: 900, deviceScaleFactor: 2 }
+  theme: "light"
+
+scenarios:
+  - id: "homepage"
+    name: "Homepage Tour"
+    type: "screenshot+video"
+    page: "/"
+    actions:
+      - dismiss_cookies: true
+      - wait: 2000
+      - screenshot: { name: "01-hero" }
+      - scroll: { to: 600, duration: 1500 }
+      - wait: 1000
+      - screenshot: { name: "02-features" }
+      - scroll: { to: 1400, duration: 1500 }
+      - wait: 1500
+
+  - id: "pricing"
+    name: "Pricing Page"
+    type: "screenshot"
+    page: "/pricing"
+    actions:
+      - dismiss_cookies: true
+      - wait: 2000
+      - screenshot: { name: "03-pricing" }
+      - scroll: { to: 400, duration: 1500 }
+      - wait: 1000
+
+export:
+  videos:
+    fps: 24
+    crf: 18
+  combined_video:
+    enabled: true
+    name: "gudform-reel.mp4"
