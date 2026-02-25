@@ -16,7 +16,7 @@ import { Command } from "commander";
 import chalk from "chalk";
 import { resolve } from "path";
 import { writeFileSync, existsSync } from "fs";
-import { loadEnv, log, setLogLevel, ensureOutputDirs } from "./utils/index.js";
+import { loadEnv, log, setLogLevel, ensureOutputDirs, normalizeUrl } from "./utils/index.js";
 import { loadConfig, getDefaultTemplate } from "./plan/index.js";
 import { recordAll } from "./record/index.js";
 import { exportAll } from "./export/index.js";
@@ -27,7 +27,7 @@ const program = new Command();
 program
   .name("launchreel")
   .description("Turn any website into launch videos and screenshots")
-  .version("0.1.0");
+  .version("0.0.2");
 
 // ── study ──
 program
@@ -46,9 +46,10 @@ program
   .option("--model <name>", "Model name to use")
   .option("-o, --output <dir>", "Output directory", ".")
   .option("-v, --verbose", "Verbose logging")
-  .action(async (url, opts) => {
+  .action(async (rawUrl, opts) => {
     if (opts.verbose) setLogLevel("debug");
     loadEnv();
+    const url = normalizeUrl(rawUrl);
 
     try {
       await studySite(url, {
@@ -186,7 +187,8 @@ program
   .command("auth <url>")
   .description("Open browser for manual login, export cookies")
   .option("-o, --output <path>", "Output cookie file", "cookies.json")
-  .action(async (url, opts) => {
+  .action(async (rawUrl, opts) => {
+    const url = normalizeUrl(rawUrl);
     log.header("LaunchReel — Manual Authentication");
     log.info(`Opening ${url} in a browser window...`);
     log.info("Log in manually, then press Ctrl+C to export cookies.\n");
@@ -221,7 +223,8 @@ program
 program
   .command("init [url]")
   .description("Create a starter launchreel.yaml in current directory")
-  .action(async (url) => {
+  .action(async (rawUrl) => {
+    const url = rawUrl ? normalizeUrl(rawUrl) : undefined;
     const configPath = resolve("launchreel.yaml");
     if (existsSync(configPath)) {
       log.warn("launchreel.yaml already exists. Skipping.");

@@ -17,3 +17,4 @@ export type { LogLevel } from "./logger.js";
 export { loadEnv, interpolateEnv, interpolateObject } from "./env.js";
 export { ensureOutputDirs } from "./paths.js";
 export type { OutputPaths } from "./paths.js";
+export { normalizeUrl } from "./normalize-url.js";

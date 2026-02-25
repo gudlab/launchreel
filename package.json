@@ -1,6 +1,6 @@
 {
   "name": "launchreel",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Turn any website into launch videos and screenshots",
   "type": "module",
   "bin": {

@@ -65,6 +65,7 @@ launchreel study https://myapp.com --max-pages 10    # Limit crawl depth
 | `--depth <n>` | Maximum crawl depth (default: 3) |
 | `--no-ai` | Skip LLM analysis, generate default scenarios |
 | `--provider <name>` | LLM provider: `claude`, `openai`, `ollama` |
+| `--model <name>` | Model name (e.g. `deepseek-r1`, `llama3.1`, `gpt-4o`) |
 | `--api-key <key>` | API key (or set `ANTHROPIC_API_KEY` / `OPENAI_API_KEY`) |
 | `-o, --output <dir>` | Output directory |
 
@@ -288,13 +289,23 @@ actions:
 
 The `study` command can use an LLM to analyze your site and generate optimized recording scenarios. Supported providers:
 
-| Provider | Flag | Env Variable | Notes |
-|----------|------|-------------|-------|
-| Claude | `--provider claude` | `ANTHROPIC_API_KEY` | Default if key is set |
-| OpenAI | `--provider openai` | `OPENAI_API_KEY` | GPT-4o by default |
-| Ollama | `--provider ollama` | `OLLAMA_HOST` | Local, no API key needed |
+| Provider | Flag | Env Variable | Default Model | Notes |
+|----------|------|-------------|---------------|-------|
+| Claude | `--provider claude` | `ANTHROPIC_API_KEY` | `claude-sonnet-4-20250514` | Default if key is set |
+| OpenAI | `--provider openai` | `OPENAI_API_KEY` | `gpt-4o` | |
+| Ollama | `--provider ollama` | `OLLAMA_HOST`, `OLLAMA_MODEL` | `llama3.1` | Local, no API key needed |
 
 Auto-detection: LaunchReel checks for API keys in order (Anthropic > OpenAI > Ollama) and uses the first available.
+
+Override the model with `--model <name>` or the corresponding env variable. For Ollama, make sure the model is installed first:
+
+```bash
+ollama list                              # See installed models
+ollama pull deepseek-r1                  # Download a model
+launchreel study https://myapp.com --model deepseek-r1
+# Or set it in .env:
+# OLLAMA_MODEL=deepseek-r1
+```
 
 ## Output
 

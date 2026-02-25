@@ -101,9 +101,9 @@ export class OllamaProvider implements LLMProvider {
   private host: string;
   private model: string;
 
-  constructor(model = "llama3.1", host?: string) {
+  constructor(model?: string, host?: string) {
     this.host = host || process.env.OLLAMA_HOST || "http://localhost:11434";
-    this.model = model;
+    this.model = model || process.env.OLLAMA_MODEL || "llama3.1";
   }
 
   async analyze(prompt: string, context: string): Promise<string> {
@@ -119,13 +119,30 @@ export class OllamaProvider implements LLMProvider {
       });
 
       if (!response.ok) {
-        throw new Error(`Ollama API error: ${response.status}`);
+        if (response.status === 404) {
+          throw new Error(
+            `Model "${this.model}" not found in Ollama. ` +
+              `Run "ollama pull ${this.model}" to download it, ` +
+              `or use --model <name> to specify an installed model. ` +
+              `List installed models with "ollama list".`,
+          );
+        }
+        throw new Error(
+          `Ollama API returned ${response.status} from ${this.host}/api/generate`,
+        );
       }
 
       const data = (await response.json()) as { response: string };
       return data.response || "";
     } catch (err) {
-      log.error(`Ollama error: ${(err as Error).message}`);
+      const msg = (err as Error).message;
+      if (msg.includes("fetch failed") || msg.includes("ECONNREFUSED")) {
+        log.error(
+          `Cannot connect to Ollama at ${this.host}. Is Ollama running? Start it with "ollama serve".`,
+        );
+      } else {
+        log.error(`Ollama error: ${msg}`);
+      }
       throw err;
     }
   }
