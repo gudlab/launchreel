@@ -44,6 +44,7 @@ program
   )
   .option("--api-key <key>", "API key for the LLM provider")
   .option("--model <name>", "Model name to use")
+  .option("-i, --instruction <text>", "Task instruction to guide scenario generation")
   .option("-o, --output <dir>", "Output directory", ".")
   .option("-v, --verbose", "Verbose logging")
   .action(async (rawUrl, opts) => {
@@ -61,6 +62,7 @@ program
         provider: opts.provider,
         apiKey: opts.apiKey,
         model: opts.model,
+        instruction: opts.instruction,
         outputConfig: opts.output,
       });
     } catch (err) {

@@ -56,6 +56,7 @@ launchreel study https://myapp.com
 launchreel study https://myapp.com --no-ai          # Skip AI analysis
 launchreel study https://myapp.com --provider claude # Use Claude for analysis
 launchreel study https://myapp.com --max-pages 10    # Limit crawl depth
+launchreel study https://myapp.com -i "sign up, create a project, invite a teammate"
 ```
 
 **Options:**
@@ -66,6 +67,7 @@ launchreel study https://myapp.com --max-pages 10    # Limit crawl depth
 | `--no-ai` | Skip LLM analysis, generate default scenarios |
 | `--provider <name>` | LLM provider: `claude`, `openai`, `ollama` |
 | `--model <name>` | Model name (e.g. `deepseek-r1`, `llama3.1`, `gpt-4o`) |
+| `-i, --instruction <text>` | Task instruction to guide scenario generation |
 | `--api-key <key>` | API key (or set `ANTHROPIC_API_KEY` / `OPENAI_API_KEY`) |
 | `-o, --output <dir>` | Output directory |
 
@@ -285,6 +287,23 @@ actions:
   - screenshot: { name: "hero" }
 ```
 
+## Instruction-Driven Demos
+
+By default, `study` generates generic launch-video scenarios (scroll, hover, screenshot). Pass `--instruction` (or `-i`) to tell the AI exactly what task to demo — it will generate scenarios that click buttons, fill forms, navigate pages, and walk through your workflow step by step.
+
+```bash
+# Booking app walkthrough
+launchreel study https://cal.com -i "sign up, update availability for an event type, get the event link, book a meeting, accept the booking, show booking stats"
+
+# Free trial demo
+launchreel study https://myapp.com -i "do a demo of the free trial signup flow"
+
+# Feature setup guide
+launchreel study https://myapp.com -i "show how to setup the workspace feature and invite teammates"
+```
+
+The AI uses the crawled site structure (pages, buttons, forms, navigation) to determine which pages to visit and what actions to take. Review the generated `launchreel.yaml` and adjust selectors or placeholder data before recording.
+
 ## LLM Providers
 
 The `study` command can use an LLM to analyze your site and generate optimized recording scenarios. Supported providers:
@@ -306,6 +325,17 @@ launchreel study https://myapp.com --model deepseek-r1
 # Or set it in .env:
 # OLLAMA_MODEL=deepseek-r1
 ```
+
+**Ollama model tips:** LaunchReel asks the LLM to generate structured YAML, which smaller models can struggle with. If you get "AI response is not valid YAML" warnings, try a model that handles structured output well:
+
+| Model | Size | Notes |
+|-------|------|-------|
+| `qwen2.5-coder:14b` | 14B | Best structured output for its size |
+| `deepseek-r1` | 7B | Good reasoning, solid YAML generation |
+| `llama3.1:70b` | 70B | Reliable but requires significant RAM |
+| `llama3.1` (8B) | 8B | May produce invalid output — use a larger model if you see errors |
+
+The raw LLM response is saved to `study-raw-response.txt` when generation fails, so you can inspect what the model returned.
 
 ## Output
 

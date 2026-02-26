@@ -43,7 +43,21 @@ export async function crawlSite(
   options: Partial<CrawlOptions> = {},
 ): Promise<StudyResult> {
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  const base = baseUrl.replace(/\/$/, "");
+  let base = baseUrl.replace(/\/$/, "");
+
+  // Follow redirects on the base URL to find the canonical origin
+  // (e.g. gudcal.com → www.gudcal.com)
+  try {
+    const probe = await fetch(base, { method: "HEAD", redirect: "follow" });
+    const finalUrl = new URL(probe.url);
+    const canonicalBase = `${finalUrl.protocol}//${finalUrl.host}`.replace(/\/$/, "");
+    if (canonicalBase !== base) {
+      log.info(`Redirect: ${base} → ${canonicalBase}`);
+      base = canonicalBase;
+    }
+  } catch {
+    // If the probe fails, continue with the original base
+  }
 
   log.step(`Crawling ${base}...`);
 
@@ -231,12 +245,12 @@ function normalizeLink(href: string, baseUrl: string): string | null {
     return null;
   }
 
-  // Absolute URL — check if same origin
+  // Absolute URL — check if same origin (treat www. and non-www. as equivalent)
   if (href.startsWith("http")) {
     try {
       const url = new URL(href);
       const baseHostname = new URL(baseUrl).hostname;
-      if (url.hostname !== baseHostname) return null;
+      if (!isSameHost(url.hostname, baseHostname)) return null;
       return url.pathname;
     } catch {
       return null;
@@ -249,6 +263,15 @@ function normalizeLink(href: string, baseUrl: string): string | null {
   }
 
   return null;
+}
+
+/**
+ * Check if two hostnames refer to the same site.
+ * Treats "example.com" and "www.example.com" as equivalent.
+ */
+function isSameHost(a: string, b: string): boolean {
+  const strip = (h: string) => h.replace(/^www\./, "");
+  return strip(a) === strip(b);
 }
 
 /**

@@ -1,3 +1,4 @@
+```yaml
 project:
   name: "GudCal"
   url: "https://www.gudcal.com"
@@ -94,3 +95,4 @@ scenarios:
 export:
   videos: { format: "mp4", fps: 24, crf: 18 }
   combined_video: { enabled: true, name: "demo-recording.mp4" }
+```

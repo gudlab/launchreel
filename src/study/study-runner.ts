@@ -22,6 +22,7 @@ export interface StudyOptions {
   apiKey?: string;
   model?: string;
   outputConfig?: string;
+  instruction?: string;
 }
 
 /**
@@ -33,6 +34,9 @@ export async function studySite(
 ): Promise<string> {
   log.header("LaunchReel — Study");
   log.info(`Target: ${url}`);
+  if (options.instruction) {
+    log.info(`Instruction: ${options.instruction}`);
+  }
 
   // Crawl the site
   const crawlOpts: Partial<CrawlOptions> = {
@@ -65,7 +69,7 @@ export async function studySite(
         options.apiKey,
         options.model,
       );
-      yamlContent = await generateScenarios(studyResult, provider);
+      yamlContent = await generateScenarios(studyResult, provider, options.instruction);
     } catch (err) {
       log.warn(
         `AI analysis failed: ${(err as Error).message}. Using default template.`,
