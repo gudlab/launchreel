@@ -364,4 +364,4 @@ launchreel-output/
 
 ## License
 
-MIT
+MIT. See [LICENSE](LICENSE).
